@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpalsemanticmap>
+  <element>
+    <category>parkingslot</category>
+    <type>水平</type>
+    <id> 000 </id>
+    <pose>
+        <pa>
+            <x> 0.1 </x>
+            <y> 0.2 </y>
+        </pa>
+        <pb>
+            <x> 0.3 </x>
+            <y> 0.4 </y>
+        </pb>
+        <pc>
+            <x> 0.5 </x>
+            <y> 0.6 </y>
+        </pc>
+        <pd>
+            <x> 0.7 </x>
+            <y> 0.8 </y>
+        </pd>
+    </pose>
+    <score>0.999556</score>
+    <occ>1</occ>
+
+  </element>
+
+  <element>
+    <category>"lane"</category>
+  </element>
+  <element> 
+    <category>"arrow"</category>
+  </element>
+  <element>
+    <category>"stop_line"</category>
+  </element>
+
+
+</gpalsemanticmap>

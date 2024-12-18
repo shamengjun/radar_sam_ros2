@@ -1,0 +1,14 @@
+/**:
+  ros__parameters:
+ 
+    frequency: 50.0
+    wait_for_datum: false
+    delay: 0.0
+    magnetic_declination_radians: 0.0
+    yaw_offset: 0.0
+    zero_altitude: true
+    broadcast_utm_transform: false
+    broadcast_utm_transform_as_parent_frame: false
+    publish_filtered_gps: true
+    use_odometry_yaw: true #这个参数貌似没有作用 
+    is_save_gps_pose: false #23.4.6

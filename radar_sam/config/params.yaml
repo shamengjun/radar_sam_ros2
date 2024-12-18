@@ -1,0 +1,166 @@
+/**:
+  ros__parameters:
+  
+    # Msg Topics
+    m_fusion_topic_name: "/fusion_data"
+    pointCloudTopic: "/radar_points2"           # Point cloud data radar_points2
+    imuTopic: "/imu"                            # Imu topic name
+    imuTopicOr: "/imu_raw"    
+    odomTopic: "/odometry/imu"                  # IMU pre-preintegration odometry, same frequency as IMU
+    gpsTopic: "odometry/gps"                   # GPS odometry topic from navsat, used to GPS_factor . see module_navsat.launch file
+    wheelOdomTopic: "/vcu_imu_odom"                # for skoda odom_corrected  for ID.4 rs/odom_a
+    gps_topic_name: "/gps"                      # if is_use_gps_c ,use this gps addGPSZFactor
+    # Frames id
+    lidarFrame: "base_link" #base_link
+    baselinkFrame: "base_link"
+    odometryFrame: "odom"
+    mapFrame: "map"
+
+    # GPS Settings
+    useImuHeadingInitialization: true           # if using GPS data to updateInitialGuess the yaw = 0, set to "true"  true 
+    useGpsElevation: false                      # if GPS elevation is bad, set to "false" :when adding gps factor ,the gps's z will not be used
+    gpsCovThreshold: 0.9                        # m^2, threshold for using GPS data 2.0
+    poseCovThreshold: 2.0       #25.0           # m^2, threshold for using GPS data 25.0 23.3.2 -->2.0 seem high
+    #add by zhaoyz 23.3.3
+    gpsDisctanceThreshold:  5.0                 # m, threshold for using GPS data 5.0 
+
+
+    # voxel filter paprams
+    mappingCornerLeafSize: 0.2                    # the downsample VoxelGrid params of saveing map 
+
+    # robot motion constraint (in case you are using a 2D robot)
+    z_tollerance: 3.0                            # meters 1000 3
+    rotation_tollerance: 1000.0                     # radians
+
+    # CPU Params
+    numberOfCores: 8                        # number of cores for mapping optimization
+    mappingProcessInterval: 0.03           # seconds, regulate mapping frequency  0.15 0.15 0.1
+
+    # Surrounding map
+    surroundingkeyframeAddingDistThreshold: 3.0  # meters, regulate keyframe adding threshold 1.0 0.8
+    surroundingkeyframeAddingAngleThreshold: 0.2  # radians, regulate keyframe adding threshold  0.2 0.1
+    surroundingKeyframeDensity: 2.0               # meters, downsample surrounding keyframe poses   
+    surroundingKeyframeSearchRadius: 20.0    #50  for test local map changed to 10   # meters, within n meters scan-to-map optimization (when loop closure disabled)
+
+    # Loop closure
+    loopClosureEnableFlag: true
+    loopClosureFrequency: 3.0         #1.0      3.0      # Hz, regulate loop closure constraint add frequency 2.0
+    surroundingKeyframeSize: 60  #50                 # submap size (when loop closure enabled)
+    historyKeyframeSearchRadius: 30.0    #15.0         # meters, key frame that is within n meters from current pose will be considerd for loop closure
+    historyKeyframeSearchTimeDiff: 5.0   #30.0 too high        # seconds, key frame that is n seconds older will be considered for loop closure
+    historyKeyframeSearchNum: 10    #25              # number of hostory key frames will be fused into a submap for loop closure
+    historyKeyframeFitnessScore: 0.3              # icp threshold, the smaller the better alignment 0.3 
+
+    # Visualization
+    globalMapVisualizationSearchRadius: 1000.0    # meters, global map visualization radius
+    globalMapVisualizationPoseDensity: 10.0       # meters, global map visualization keyframe density
+    globalMapVisualizationLeafSize: 1.0           # meters, global map visualization cloud density
+
+    multi_frame: 1 #2
+    loopIntervalFrames: 30 #5  10
+    ndtEpsion: 0.005 #0.01 
+    ndtStepSize: 0.05 #0.1
+    ndtResolution: 1.0  #1.0
+    ndtMaxInter: 200   #100, average 0.08s 100
+    #tumPoseFile: radar_sam_pose_xxx.txt
+    filter_min_z: 0.0
+    mappingLoopLeafSize: 0.5 #0.5 09-22 0.25 for test front1+back2 -> 0.1
+    mappingSurfLeafSize: 0.4  #0.4 too small      # default: 0.4 - outdoor, 0.2 - indoor for dongfangwanguo 0.6 0.5 normal
+    #add by zhaoyz 2022.11.23 
+    ndt_search_method: 1 # 0-->kdtree 1-->direct7 2-->direct1
+
+    add_wheel_odometry: false
+
+    submapOutputMethod: 1 #0 -> RS(radius search) 1 -> CN(continue number of frames)
+    submapOutputSearchRadius: 20.0 #m 5.0
+    submapOutputContinueNumberFrames: 15 #10
+    cropBoundingBox: false
+    bbx_a: 20.0 #m
+    bbx_b: 15.0 #m
+    bbx_c: 10.0 #m
+    downSampleSubmap: false
+    radiusSearchLeafSize: 0.5
+    continueNumberFrameLeafSize: 0.5
+    #2023.2.14根据是否要转化到map下
+    is_convert_to_map: false
+
+  
+    #2023.2.22 是否使用radar_odometry
+    is_use_radar_odometry: false #true
+
+    is_auto_save_map: false #
+
+    #Global pcd map filter
+    is_filter_cloud_map_pcd: false
+    map_pcd_setRadiusSearch: 0.5
+    map_pcd_setMinNeighborsInRadius: 5
+    map_pcd_setMeanK: 1
+    map_pcd_setStddevMulThresh: 1.0
+
+    #----------------not commonly used---------------------
+    # IMU Settings
+    imuAccNoise: 3.9939570888238808e-03 #3.9939570888238808e-03
+    imuGyrNoise: 1.5636343949698187e-03 #1.5636343949698187e-03
+    imuAccBiasN: 6.4356659353532566e-05 #6.4356659353532566e-05
+    imuGyrBiasN: 3.5640318696367613e-05 #3.5640318696367613e-05
+    imuGravity: 9.7964
+    imuRPYWeight: 0.1 # 0.01
+
+    # Extrinsics (lidar -> IMU) for ID4
+    extrinsicTrans: [0.0, 0.0, 0.0]
+
+    extrinsicRot: [ 1.0,  0.0,  0.0,
+                    0.0,  -1.0,  0.0,
+                    0.0,  0.0,  -1.0]
+    extrinsicRPY: [1.0,  0.0,  0.0,
+                  0.0,  1.0,  0.0,
+                  0.0,  0.0,  1.0]
+
+    #23.8.3 whether compress pcd map
+    map_compression: true
+
+    park_name: "gpal_park"
+    map_save_dir: "/_map_dir"
+    radar_sam_mapping_nodes: ["/radar_sam_transFusionData", "/radar_sam_imageProjection",
+                              "/radar_sam_imuPreintegration", "/radar_sam_transformFusion",
+                              "/radar_sam_mapOptmization", "/robot_state_publisher","/radar_sam_rviz"]
+
+    #2023.4.3 增加是否保存tum格式的消息类型
+    is_save_tum_pose: false
+    is_save_align_info: false
+    is_save_gps_pose: false
+
+    #2023.5.29
+    is_use_gps_z: false
+    #2023.6.1
+    is_add_snr: true
+    #2023.6.2
+    is_use_gps_a: false
+    is_use_gps_c: false #2个不要同时用
+    #2023.6.9
+    is_save_z_value: false
+
+    #2023.6.25 add global optimization choise
+    is_global_optimization: false #false
+    is_visualization_graph: false
+
+    auto_ending_mapping_method: 1
+    # 0 按照以及是否产生回环判断检测走过的圈数,并按照圈数以及回环次数进行判断并结束建图
+    # 1 通过判断回环检测次数结束建图
+    # 2 通过gps判断走过的圈数结束建图
+    # 3 通过gps判断走过的圈数+回环次数结束建图
+
+    # Export settings
+    savePCD: false                              # https://github.com/TixiaoShan/LIO-SAM/issues/3
+    savePCDDirectory: "/MappingResult/"        # if use Service to end the mapping ,you need to fix this Directory
+
+    # Sensor Settings                           
+    Radar_target_number: 10000  #2000 似乎太小 
+
+    mapping_mode: 2 # 1--> normal 2-->remember(save graph/固定路径加载graph) 
+                                                            
+
+
+
+
+

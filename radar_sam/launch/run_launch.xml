@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Declare launch argument -->
+    <!-- <arg name= "path" default="$(find-pkg-share radar_sam)/config/params.yaml" /> -->
+
+    <!-- <node pkg="tf2_ros" exec="static_transform_publisher" name="static_transform_publisher" output="screen">
+
+        <param from="$(find-pkg-share radar_sam)/config/params.yaml"/>
+
+    </node> -->
+    
+    <node pkg="robot_state_publisher" exec="robot_state_publisher" name="robot_state_publisher" output="screen">
+        <param from ="$(find-pkg-share xacro)/xacro" />
+        <param from ="$(find-pkg-share radar_sam)/config/robot.urdf.xacro" />
+    </node>
+    
+    <node pkg="radar_sam" exec="radar_sam_transFusionData" name="radar_sam_transFusionData" output="screen">
+        <param from= "$(find-pkg-share radar_sam)/config/params.yaml" />
+    </node>
+    
+    <node pkg="radar_sam" exec="radar_sam_imuPreintegration" name="radar_sam_imuPreintegration" output="screen">
+        <param from= "$(find-pkg-share radar_sam)/config/params.yaml" />
+    </node>
+    
+    <node pkg="radar_sam" exec="radar_sam_imageProjection" name="radar_sam_imageProjection" output="screen">
+        <param from= "$(find-pkg-share radar_sam)/config/params.yaml" />
+    </node>
+    
+    <node pkg="radar_sam" exec="radar_sam_transformFusion" name="radar_sam_transformFusion" output="screen">
+        <param from= "$(find-pkg-share radar_sam)/config/params.yaml" />
+    </node>
+    
+    <node pkg="radar_sam" exec="radar_sam_mapOptimization" name="radar_sam_mapOptimization" output="screen">
+        <param from= "$(find-pkg-share radar_sam)/config/params.yaml" />
+    </node>
+    
+    <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" args="-d $(find-pkg-share radar_sam)/config/rviz2.rviz">
+
+    </node>
+</launch>
